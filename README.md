@@ -7,7 +7,7 @@ OCI documents the Object Storage private endpoint service, but the Terraform res
 ## Background and references
 
 - [OCI Object Storage private endpoints](https://docs.oracle.com/en-us/iaas/Content/Object/Tasks/private-endpoints.htm) — official service documentation.
-- [Oracle example: Private Endpoint for OCI Object Storage with Terraform](https://blogs.oracle.com/lad-cloud-experts-pt/private-endpoint-oci-object-storage-terraform) — supporting example (written in Portuguese).
+- [Oracle example: Private Endpoint for OCI Object Storage with Terraform](https://blogs.oracle.com/lad-cloud-experts-pt/private-endpoint-oci-object-storage-terraform) — supporting implementation reference (written in Portuguese); this repository provides the English customer-facing guide.
 - [OCI Terraform provider source](https://github.com/oracle/terraform-provider-oci) — provider implementation and issue-tracking location when Registry documentation needs improvement.
 
 ## Customer reference article

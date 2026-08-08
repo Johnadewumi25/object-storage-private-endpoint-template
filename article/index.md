@@ -6,6 +6,8 @@ OCI Object Storage private endpoints let workloads in a virtual cloud network (V
 
 This customer reference provides an English Terraform example for creating an Object Storage private endpoint. It was developed from a proof of concept and is intended as a starting point for repeatable deployments in separate non-production and production environments.
 
+It is an English, customer-facing companion to the [Oracle implementation reference for creating an OCI Object Storage private endpoint with Terraform](https://blogs.oracle.com/lad-cloud-experts-pt/private-endpoint-oci-object-storage-terraform). That supporting article is written in Portuguese; this article presents the same solution area in English with deployment, validation, security, and troubleshooting guidance.
+
 The core Terraform resource is [`oci_objectstorage_private_endpoint`](https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/objectstorage_private_endpoint). The associated OCI service guide is [Using Private Endpoints for Object Storage](https://docs.oracle.com/en-us/iaas/Content/Object/Tasks/private-endpoints.htm).
 
 ## Table of Contents
@@ -237,7 +239,7 @@ Use the example as a starting point, then adapt it to existing customer networki
 
 - **Author:** John Adewumi
 - **Reference implementation:** OCI Object Storage private endpoint Terraform proof of concept.
-- **Supporting reference:** [Oracle private endpoint Terraform example](https://blogs.oracle.com/lad-cloud-experts-pt/private-endpoint-oci-object-storage-terraform) (Portuguese).
+- **Supporting reference:** [Oracle private endpoint Terraform example](https://blogs.oracle.com/lad-cloud-experts-pt/private-endpoint-oci-object-storage-terraform) (Portuguese). This article is the English, customer-facing companion reference.
 
 ## More Learning Resources
 
