@@ -77,14 +77,6 @@ The demonstration configuration creates the following resources:
 
 The architecture separates the workload and endpoint into private network components. Object Storage access is directed through the private endpoint, and the access target scopes the endpoint to the intended bucket.
 
-### Terraform implementation view
-
-The following diagram maps directly to the resources, data source, variables, and outputs in this repository. It intentionally shows only what the Terraform configuration creates or reads; customer connectivity components outside this template are not included.
-
-![Terraform resource architecture for the OCI Object Storage private endpoint](images/terraform-resource-architecture.svg)
-
-The `oci_objectstorage_namespace` data source reads the namespace using `tenancy_ocid`. Terraform then creates the VCN, security list, private subnet, private bucket, and Object Storage private endpoint. The endpoint receives its private IP from the private subnet and has an access target restricted to the bucket created by the configuration.
-
 The private endpoint is assigned an IP address in the selected private subnet. Its access target limits the endpoint to the namespace, compartment, and bucket declared in Terraform. The endpoint is not a general replacement for all Object Storage access; access targets should be deliberately scoped to the buckets a workload requires.
 
 ## Deployment Options
