@@ -1,6 +1,18 @@
 # OCI Object Storage Private Endpoint Terraform Template
 
-This template creates a minimal OCI Object Storage private endpoint test environment with Terraform.
+This repository provides an English, Terraform-managed reference implementation for an OCI Object Storage private endpoint. It was created after a request to deploy private endpoints consistently in `ptnonprod` and `ptprod`, following a manually configured proof of concept in `paracepoc`.
+
+OCI documents the Object Storage private endpoint service, but the Terraform resource can be difficult to discover in the Registry. The resource used by this template is [`oci_objectstorage_private_endpoint`](https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/objectstorage_private_endpoint). The implementation also uses an access target to limit the endpoint to the bucket created by the template.
+
+## Background and references
+
+- [OCI Object Storage private endpoints](https://docs.oracle.com/en-us/iaas/Content/Object/Tasks/private-endpoints.htm) — official service documentation.
+- [Oracle example: Private Endpoint for OCI Object Storage with Terraform](https://blogs.oracle.com/lad-cloud-experts-pt/private-endpoint-oci-object-storage-terraform) — supporting example (written in Portuguese).
+- [OCI Terraform provider source](https://github.com/oracle/terraform-provider-oci) — provider implementation and issue-tracking location when Registry documentation needs improvement.
+
+Use this template once per target environment (for example, `ptnonprod` and `ptprod`) with environment-specific Terraform variables and state. Do not reuse state between environments.
+
+## What this template creates
 
 It creates:
 
