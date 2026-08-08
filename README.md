@@ -10,6 +10,10 @@ OCI documents the Object Storage private endpoint service, but the Terraform res
 - [Oracle example: Private Endpoint for OCI Object Storage with Terraform](https://blogs.oracle.com/lad-cloud-experts-pt/private-endpoint-oci-object-storage-terraform) — supporting example (written in Portuguese).
 - [OCI Terraform provider source](https://github.com/oracle/terraform-provider-oci) — provider implementation and issue-tracking location when Registry documentation needs improvement.
 
+## Customer reference article
+
+For a customer-ready walkthrough, including architecture, deployment options, verification, security considerations, and troubleshooting, see [Private Access to OCI Object Storage with Terraform](article/index.md).
+
 Use this template once per target environment (for example, `ptnonprod` and `ptprod`) with environment-specific Terraform variables and state. Do not reuse state between environments.
 
 ## What this template creates
