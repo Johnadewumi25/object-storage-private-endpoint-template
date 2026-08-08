@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="930" viewBox="0 0 1440 930" role="img" aria-labelledby="title description">
+  <title id="title">Terraform implementation architecture for an OCI Object Storage private endpoint</title>
+  <desc id="description">A diagram of the resources defined in the Terraform configuration: variables and the OCI provider, an Object Storage namespace data source, a VCN, security list, private subnet, private Object Storage bucket, private endpoint, access target, and Terraform outputs.</desc>
+  <defs>
+    <style>
+      .heading { font: 700 30px Arial, sans-serif; fill: #172b4d; }
+      .subheading { font: 700 20px Arial, sans-serif; fill: #172b4d; }
+      .label { font: 700 17px Arial, sans-serif; fill: #172b4d; }
+      .body { font: 15px Arial, sans-serif; fill: #334e68; }
+      .code { font: 14px Consolas, "Courier New", monospace; fill: #102a43; }
+      .small { font: 13px Arial, sans-serif; fill: #486581; }
+      .group { fill: #f7fbff; stroke: #4c8eda; stroke-width: 3; }
+      .compartment { fill: #ffffff; stroke: #7aa7d8; stroke-width: 2; }
+      .resource { fill: #eef6ff; stroke: #3279c8; stroke-width: 2; }
+      .network { fill: #e6f4ea; stroke: #318f68; stroke-width: 2; }
+      .storage { fill: #f2eafa; stroke: #7655a6; stroke-width: 2; }
+      .endpoint { fill: #fff0db; stroke: #d9822b; stroke-width: 2.5; }
+      .data { fill: #fff9db; stroke: #bd8b00; stroke-width: 2; }
+      .output { fill: #f0f4f8; stroke: #627d98; stroke-width: 2; }
+      .arrow { stroke: #3279c8; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+      .dashed { stroke: #627d98; stroke-width: 2.5; fill: none; stroke-dasharray: 8 6; marker-end: url(#arrowGray); }
+      .relation { font: 13px Arial, sans-serif; fill: #486581; }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="#3279c8"/></marker>
+    <marker id="arrowGray" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="#627d98"/></marker>
+  </defs>
+
+  <rect width="1440" height="930" fill="#ffffff"/>
+  <text x="720" y="45" text-anchor="middle" class="heading">OCI Object Storage Private Endpoint — Terraform Resource Architecture</text>
+  <text x="720" y="72" text-anchor="middle" class="small">Resources and relationships implemented in this repository</text>
+
+  <!-- Terraform inputs -->
+  <rect x="55" y="120" width="310" height="272" rx="14" class="resource"/>
+  <text x="210" y="155" text-anchor="middle" class="subheading">Terraform configuration</text>
+  <text x="85" y="193" class="code">providers.tf</text>
+  <text x="85" y="221" class="code">variables.tf</text>
+  <text x="105" y="249" class="body">oci_profile, region</text>
+  <text x="105" y="273" class="body">tenancy_ocid, compartment_ocid</text>
+  <text x="105" y="297" class="body">vcn_cidr, subnet_cidr</text>
+  <text x="105" y="321" class="body">private_endpoint_ip</text>
+  <text x="105" y="345" class="body">additional_prefixes, tags</text>
+  <text x="85" y="374" class="small">OCI provider authenticates with the selected profile.</text>
+
+  <!-- data source -->
+  <rect x="485" y="120" width="300" height="116" rx="14" class="data"/>
+  <text x="635" y="155" text-anchor="middle" class="label">Data source</text>
+  <text x="635" y="184" text-anchor="middle" class="code">oci_objectstorage_namespace.this</text>
+  <text x="635" y="210" text-anchor="middle" class="body">Reads Object Storage namespace from tenancy_ocid</text>
+
+  <path d="M365 221 L485 178" class="arrow"/>
+  <text x="405" y="184" class="relation">tenancy_ocid</text>
+
+  <!-- OCI scope -->
+  <rect x="420" y="280" width="965" height="560" rx="20" class="group"/>
+  <text x="450" y="320" class="subheading">OCI region and target compartment</text>
+  <text x="450" y="346" class="small">All Terraform-managed resources below use var.compartment_ocid and optional freeform tags.</text>
+
+  <!-- Network boundaries -->
+  <rect x="460" y="382" width="495" height="390" rx="14" class="compartment"/>
+  <text x="490" y="418" class="label">VCN — oci_core_vcn.test</text>
+  <text x="490" y="444" class="code">cidr_block = var.vcn_cidr</text>
+  <text x="490" y="466" class="small">dns_label = tfospe</text>
+
+  <rect x="493" y="500" width="205" height="190" rx="12" class="network"/>
+  <text x="595" y="534" text-anchor="middle" class="label">Security list</text>
+  <text x="595" y="560" text-anchor="middle" class="code">oci_core_security_list</text>
+  <text x="595" y="590" text-anchor="middle" class="small">Ingress: TCP 443</text>
+  <text x="595" y="610" text-anchor="middle" class="small">Source: var.vcn_cidr</text>
+  <text x="595" y="640" text-anchor="middle" class="small">Egress: all to 0.0.0.0/0</text>
+
+  <rect x="730" y="500" width="190" height="190" rx="12" class="network"/>
+  <text x="825" y="534" text-anchor="middle" class="label">Private subnet</text>
+  <text x="825" y="560" text-anchor="middle" class="code">oci_core_subnet</text>
+  <text x="825" y="590" text-anchor="middle" class="small">cidr = var.subnet_cidr</text>
+  <text x="825" y="612" text-anchor="middle" class="small">No public IP on VNIC</text>
+  <text x="825" y="642" text-anchor="middle" class="small">Uses the security list</text>
+
+  <path d="M698 595 L730 595" class="arrow"/>
+
+  <!-- storage resources -->
+  <rect x="1010" y="382" width="330" height="390" rx="14" class="compartment"/>
+  <text x="1175" y="418" text-anchor="middle" class="label">Object Storage resources</text>
+
+  <rect x="1040" y="457" width="270" height="110" rx="12" class="storage"/>
+  <text x="1175" y="490" text-anchor="middle" class="label">Private bucket</text>
+  <text x="1175" y="516" text-anchor="middle" class="code">oci_objectstorage_bucket.test</text>
+  <text x="1175" y="542" text-anchor="middle" class="small">access_type = NoPublicAccess</text>
+
+  <rect x="1040" y="610" width="270" height="116" rx="12" class="endpoint"/>
+  <text x="1175" y="643" text-anchor="middle" class="label">Object Storage private endpoint</text>
+  <text x="1175" y="669" text-anchor="middle" class="code">oci_objectstorage_private_endpoint.test</text>
+  <text x="1175" y="694" text-anchor="middle" class="small">name, prefix, private_endpoint_ip, additional_prefixes</text>
+
+  <!-- endpoint relationships -->
+  <path d="M920 595 L1040 668" class="arrow"/>
+  <text x="936" y="616" class="relation">subnet_id</text>
+  <path d="M1175 567 L1175 610" class="arrow"/>
+  <text x="1200" y="595" class="relation">access_targets.bucket</text>
+  <path d="M785 212 L1040 495" class="dashed"/>
+  <text x="834" y="296" class="relation">namespace</text>
+  <path d="M785 212 L1040 652" class="dashed"/>
+
+  <!-- access target note -->
+  <rect x="1010" y="790" width="330" height="90" rx="12" class="data"/>
+  <text x="1175" y="820" text-anchor="middle" class="label">Access target scope</text>
+  <text x="1175" y="846" text-anchor="middle" class="small">namespace + compartment_id + bucket</text>
+  <text x="1175" y="868" text-anchor="middle" class="small">Limits the endpoint to the created bucket.</text>
+  <path d="M1175 726 L1175 790" class="arrow"/>
+
+  <!-- outputs -->
+  <rect x="55" y="500" width="310" height="270" rx="14" class="output"/>
+  <text x="210" y="535" text-anchor="middle" class="subheading">Terraform outputs</text>
+  <text x="85" y="572" class="code">namespace</text>
+  <text x="85" y="600" class="code">bucket_name</text>
+  <text x="85" y="628" class="code">private_endpoint_name / id</text>
+  <text x="85" y="656" class="code">private_endpoint_ip</text>
+  <text x="85" y="684" class="code">private_endpoint_fqdns</text>
+  <text x="85" y="712" class="code">OCI CLI get command</text>
+  <text x="85" y="748" class="small">Use the FQDN output for private endpoint testing.</text>
+
+  <path d="M460 652 L365 652" class="dashed"/>
+  <path d="M1010 670 L365 670" class="dashed"/>
+  <text x="370" y="633" class="relation">resource attributes</text>
+
+  <text x="720" y="902" text-anchor="middle" class="small">Dashed arrows show data and output relationships. Solid arrows show resource dependencies configured in Terraform.</text>
+</svg>
