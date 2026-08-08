@@ -237,7 +237,7 @@ Use the example as a starting point, then adapt it to existing customer networki
 
 ## Acknowledgments
 
-- **Author:** John Adewumi
+- **Author:** John Adewumi (Senior Cloud Architect)
 - **Reference implementation:** OCI Object Storage private endpoint Terraform proof of concept.
 - **Supporting reference:** [Oracle private endpoint Terraform example](https://blogs.oracle.com/lad-cloud-experts-pt/private-endpoint-oci-object-storage-terraform) (Portuguese). This article is the English, customer-facing companion reference.
 
