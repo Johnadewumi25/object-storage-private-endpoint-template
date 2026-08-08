@@ -8,6 +8,24 @@ This customer reference provides an English Terraform example for creating an Ob
 
 The core Terraform resource is [`oci_objectstorage_private_endpoint`](https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/objectstorage_private_endpoint). The associated OCI service guide is [Using Private Endpoints for Object Storage](https://docs.oracle.com/en-us/iaas/Content/Object/Tasks/private-endpoints.htm).
 
+## Table of Contents
+
+- [Objectives](#objectives)
+- [Prerequisites](#prerequisites)
+- [Download the Code](#download-the-code)
+- [Architecture](#architecture)
+- [Deployment Options](#deployment-options)
+- [Task 1: Configure Terraform Variables](#task-1-configure-terraform-variables)
+- [Task 2: Deploy the Private Endpoint](#task-2-deploy-the-private-endpoint)
+- [Task 3: Verify the Private Endpoint](#task-3-verify-the-private-endpoint)
+- [Task 4: Test Object Access](#task-4-test-object-access)
+- [IAM and Security Considerations](#iam-and-security-considerations)
+- [Troubleshooting](#troubleshooting)
+- [Clean Up](#clean-up)
+- [Summary](#summary)
+- [Acknowledgments](#acknowledgments)
+- [More Learning Resources](#more-learning-resources)
+
 ## Objectives
 
 In this tutorial, you will learn how to:
@@ -53,13 +71,9 @@ The repository contains Terraform configuration only. It does not include OCI cr
 
 The demonstration configuration creates the following resources:
 
-```text
-Workload in VCN
-       |
-       | HTTPS (443)
-       v
-Private subnet --> Object Storage private endpoint --> Scoped private bucket
-```
+![OCI Object Storage private endpoint architecture](images/oci-object-storage-private-endpoint-architecture.svg)
+
+The architecture separates the workload and endpoint into private network components. Object Storage access is directed through the private endpoint, and the access target scopes the endpoint to the intended bucket.
 
 The private endpoint is assigned an IP address in the selected private subnet. Its access target limits the endpoint to the namespace, compartment, and bucket declared in Terraform. The endpoint is not a general replacement for all Object Storage access; access targets should be deliberately scoped to the buckets a workload requires.
 
@@ -218,6 +232,12 @@ Before deleting a customer production endpoint, confirm the dependent workloads,
 OCI Object Storage private endpoints can be managed with Terraform through `oci_objectstorage_private_endpoint`, even when the resource is not easy to discover in the Registry. This repository gives customers a small, reviewable example that creates the required network path, a private bucket, the endpoint, and a bucket-scoped access target.
 
 Use the example as a starting point, then adapt it to existing customer networking, least-privilege IAM, environment separation, and operational change controls.
+
+## Acknowledgments
+
+- **Author:** John Adewumi
+- **Reference implementation:** OCI Object Storage private endpoint Terraform proof of concept.
+- **Supporting reference:** [Oracle private endpoint Terraform example](https://blogs.oracle.com/lad-cloud-experts-pt/private-endpoint-oci-object-storage-terraform) (Portuguese).
 
 ## More Learning Resources
 
