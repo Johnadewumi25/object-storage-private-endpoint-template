@@ -1,0 +1,16 @@
+oci_profile      = "DEFAULT"
+region           = "us-ashburn-1"
+tenancy_ocid     = "ocid1.tenancy.oc1..example"
+compartment_ocid = "ocid1.compartment.oc1..example"
+
+name_prefix = "tf-os-pe-test"
+
+# Change these if they overlap with existing VCN CIDR ranges.
+vcn_cidr    = "10.42.0.0/16"
+subnet_cidr = "10.42.1.0/24"
+
+# Optional. Leave null to let OCI assign an available private IP.
+private_endpoint_ip = null
+
+# Optional additional DNS prefixes for the private endpoint.
+additional_prefixes = []
